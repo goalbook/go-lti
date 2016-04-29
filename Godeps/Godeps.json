@@ -1,0 +1,14 @@
+{
+	"ImportPath": "github.com/goalbook/goalbook-auth/auth/lti",
+	"GoVersion": "go1.4.2",
+	"Deps": [
+		{
+			"ImportPath": "github.com/google/go-querystring/query",
+			"Rev": "547ef5ac979778feb2f760cdb5f4eae1a2207b86"
+		},
+		{
+			"ImportPath": "github.com/gorilla/schema",
+			"Rev": "83d18c92c931a85a1393e7294a74dec23086f89c"
+		}
+	]
+}
