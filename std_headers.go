@@ -136,6 +136,7 @@ func parseUrlEncodedForm(m map[string][]string) (*LTIStdHeaders, error) {
 	return l, err
 }
 
+// **Not implemented**
 func ParseXMLEncodedFile(filename string) (*LTIStdHeaders, error) { return nil, nil }
 
 func serializeJsonBody(l LTIStdHeaders) (io.ReadCloser, error) {

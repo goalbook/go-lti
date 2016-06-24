@@ -10,6 +10,8 @@ import (
 	"strings"
 )
 
+// Tool provider wraps a provided http.Request, parses the LTI headers and allows for access
+// to standard LTI Header fields as well as validation of LTI request.
 type LTIToolProvider struct {
 	LTIHeaders  *LTIStdHeaders
 	LTIResponse *LTIStdResponse
@@ -20,6 +22,9 @@ type LTIToolProvider struct {
 	requestProxyScheme string
 }
 
+// Create a new LTIToolProvide and set the LTIHeaders attribute to
+// the parsed http.Request payload. Accepts URL encoded forms
+// per LTI 1.0 spec and additionally supports also JSON payloads.
 func NewLTIToolProvider(r *http.Request) (*LTIToolProvider, error) {
 	var err error
 
@@ -49,6 +54,9 @@ func NewLTIToolProvider(r *http.Request) (*LTIToolProvider, error) {
 	return &provider, nil
 }
 
+// Validate that the LTI request was signed with the provided consumer secret.
+//
+// TODO Implement nonce checking and better timestamp checking.
 func (tp *LTIToolProvider) ValidateRequest(consumerSecret string, checkTimestamp, checkNonce bool) (bool, error) {
 	var err error
 
@@ -105,6 +113,8 @@ func (tp *LTIToolProvider) ValidateRequest(consumerSecret string, checkTimestamp
 	return true, nil
 }
 
+// If the LTI request provided a return URL, serialize the LTIResponse and create
+// a return URL from it.
 func (tp *LTIToolProvider) CreateReturnURL() (*url.URL, error) {
 	if tp.LTIHeaders == nil || tp.LTIHeaders.LaunchPresReturnURL == "" {
 		return nil, nil
@@ -119,7 +129,10 @@ func (tp *LTIToolProvider) CreateReturnURL() (*url.URL, error) {
 	return url.Parse(returnUrl)
 }
 
-// TODO: remove this, pull proxy path from headers
+// IF a request is being proxied passed, the original request host information is overwritten by
+// the proxying host. Use this to correctly set the desired host.
+//
+// TODO remove this, pull proxy path from headers
 func (tp *LTIToolProvider) SetProxyPathPrefix(proxyPath string) {
 	proxyPath = strings.TrimPrefix(proxyPath, "/")
 	proxyPath = strings.TrimSuffix(proxyPath, "/")
