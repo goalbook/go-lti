@@ -1,3 +1,5 @@
+**_This project is under development. There are no API stabiltiy guarantees at this point._**
+
 # Go-LTI
 Implementation of LTI 1.0 Protocol in Go. 
 
